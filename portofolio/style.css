@@ -1,0 +1,567 @@
+/* ===== Reset & Base ===== */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  background: linear-gradient(180deg, var(--bg-2), var(--bg-1));
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-y: overlay;
+  perspective: 1200px;
+  perspective-origin: 50% 18%;
+}
+
+/* ===== Variables ===== */
+:root {
+  --bg-1: #071127;
+  --bg-2: #0f1724;
+  --muted: rgba(153, 164, 178, 0.92);
+  --accent: #38bdf8;
+  --accent-2: #7c3aed;
+  --card: rgba(255, 255, 255, 0.02);
+  --radius: 12px;
+  --text: #e6eef8;
+  --container: 1100px;
+}
+
+/* ===== Body & Layout ===== */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* full viewport height */
+  color: white;
+}
+
+/* ===== Card 3D Styling ===== */
+.card-3d {
+  position: relative;
+  width: 300px;
+  height: 200px;
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  box-shadow: 0 12px 30px rgba(3, 8, 20, 0.35);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  will-change: transform;
+  transition: transform 260ms cubic-bezier(0.2, 0.9, 0.3, 1), box-shadow 260ms ease;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  background: linear-gradient(135deg, #38bdf8, #0284c7);
+}
+
+.card-3d h2 {
+  margin: 0 0 10px 0;
+}
+
+.card-3d p {
+  margin: 0;
+  font-weight: 500;
+}
+
+/* ===== Light Overlay for 3D Tilt ===== */
+.light-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: var(--radius);
+  mix-blend-mode: overlay;
+  opacity: 0;
+  transition: opacity 200ms linear;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08), transparent 30%);
+}
+
+/* ===== UI Toggle (Optional) ===== */
+.ui {
+  position: fixed;
+  right: 14px;
+  top: 14px;
+  z-index: 250;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.ui label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 6px 10px;
+  border-radius: 999px;
+  user-select: none;
+}
+
+/* ===== Canvas Background (Optional) ===== */
+canvas.bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+/* ===== Wrapper ===== */
+.wrap {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 28px;
+  position: relative;
+  z-index: 10;
+}
+
+/* ===== Header ===== */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  position: sticky;
+  top: 0;
+  padding: 12px 0;
+  z-index: 80;
+  background: linear-gradient(180deg, rgba(6, 10, 20, 0.6), rgba(6, 10, 20, 0.15));
+  backdrop-filter: blur(6px);
+}
+
+.brand {
+  font-weight: 800;
+  letter-spacing: 6px;
+  font-size: 22px;
+  color: var(--text);
+}
+
+.brand .muted {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+nav ul {
+  display: flex;
+  gap: 18px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+nav a {
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 6px 8px;
+  border-radius: 8px;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: var(--accent);
+}
+
+/* ===== Hero Section ===== */
+.hero {
+  display: flex;
+  gap: 36px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 36px 0;
+  min-height: 66vh;
+}
+
+.hero-left {
+  flex: 1;
+}
+
+.big-name {
+  font-weight: 800;
+  font-size: clamp(46px, 9vw, 96px);
+  letter-spacing: 14px;
+  line-height: 0.9;
+  margin: 0 0 12px;
+  color: #f8fafc;
+  user-select: none;
+}
+
+.subtitle {
+  color: var(--muted);
+  margin: 0 0 18px;
+  max-width: 60ch;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.hero-cta a {
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: none;
+  margin-right: 14px;
+  transition: all 0.22s ease;
+  user-select: none;
+}
+
+.hero-cta a:hover {
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: #00111a;
+}
+
+.hero-cta a.ghost {
+  border-color: rgba(255, 255, 255, 0.15);
+  color: var(--muted);
+}
+
+.hero-cta a.ghost:hover {
+  color: var(--accent-2);
+  border-color: var(--accent-2);
+}
+
+/* ===== Intro Card ===== */
+.intro-card {
+  width: 320px;
+  padding: 18px;
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow: 0 18px 48px rgba(2, 6, 20, 0.6);
+  transform-style: preserve-3d;
+  user-select: none;
+}
+
+.intro-card h4 {
+  margin: 0 0 6px;
+  font-weight: 700;
+}
+
+.meta {
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.small {
+  font-size: 13px;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.03);
+  margin: 12px 0;
+}
+
+/* ===== Sections ===== */
+section {
+  margin-top: 56px;
+}
+
+.section-title {
+  letter-spacing: 6px;
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+/* ===== Services Grid ===== */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.service {
+  background: var(--card);
+  padding: 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  transform-style: preserve-3d;
+  user-select: none;
+}
+
+.service h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* ===== Projects Grid ===== */
+.projects {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.proj {
+  background: linear-gradient(180deg, var(--card), rgba(255, 255, 255, 0.01));
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+  transform-style: preserve-3d;
+  user-select: none;
+}
+
+.proj-meta {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 6px;
+  user-select: none;
+}
+
+.proj-link {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 700;
+  user-select: text;
+}
+
+.proj-link:hover {
+  text-decoration: underline;
+}
+
+.proj-year {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 6px;
+  user-select: none;
+}
+
+/* ===== About Section ===== */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 24px;
+  align-items: center;
+}
+
+.about-text {
+  padding: 18px;
+  border-radius: 12px;
+  background: var(--card);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  transform-style: preserve-3d;
+  user-select: none;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.about-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  user-select: none;
+}
+
+.avatar {
+  width: 160px;
+  height: 160px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  box-shadow: 0 20px 40px rgba(56, 189, 248, 0.06);
+}
+
+/* ===== Contact Form ===== */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 20px;
+  align-items: start;
+}
+
+.contact-form {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  border-radius: 12px;
+  background: var(--card);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  transform-style: preserve-3d;
+  user-select: none;
+}
+
+.contact-form input,
+.contact-form textarea {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 12px;
+  border-radius: 8px;
+  color: var(--text);
+  outline: none;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: var(--muted);
+}
+
+.btn {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 0;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: #00111a;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background: linear-gradient(90deg, var(--accent-2), var(--accent));
+}
+
+/* ===== Skills ===== */
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.skill {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 8px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  color: var(--muted);
+  font-size: 13px;
+  user-select: none;
+}
+
+/* ===== Footer ===== */
+footer.site-footer {
+  margin-top: 56px;
+  color: var(--muted);
+  text-align: center;
+  padding: 24px 0;
+  user-select: none;
+}
+
+/* ===== Reveal Animation Base ===== */
+.reveal,
+.proj,
+.service,
+.about-text,
+.intro-card,
+.avatar,
+.contact-form {
+  opacity: 0;
+  transform: translateZ(-20px) translateY(12px);
+  transition: transform 600ms cubic-bezier(0.2, 0.9, 0.3, 1), opacity 600ms ease;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1100px) {
+  .services-grid,
+  .projects {
+    grid-template-columns: 1fr;
+  }
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+  .hero {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 22px;
+  }
+  .intro-card {
+    width: 100%;
+  }
+}
+
+@media (max-width: 700px) {
+  .wrap {
+    padding: 18px;
+  }
+  .big-name {
+    font-size: 36px;
+    letter-spacing: 8px;
+  }
+  nav ul {
+    display: none;
+  }
+}
+
+/* ===== Utility Classes ===== */
+.muted {
+  color: var(--muted);
+}
+.small {
+  font-size: 13px;
+}
+.ghost {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* ===== NameTag Animasi Jatuh ===== */
+#nameTag {
+  position: fixed;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #38bdf8, #7c3aed);
+  color: #00111a;
+  font-weight: 800;
+  font-size: 28px;
+  padding: 12px 24px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(56, 189, 248, 0.6);
+  user-select: none;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+#nameTag.fall {
+  animation: fallDown 1.2s forwards;
+  opacity: 1;
+}
+
+@keyframes fallDown {
+  0% {
+    transform: translateX(-50%) translateY(-150px) rotate(-10deg);
+    opacity: 0;
+  }
+  60% {
+    transform: translateX(-50%) translateY(30px) rotate(8deg);
+    opacity: 1;
+  }
+  80% {
+    transform: translateX(-50%) translateY(0px) rotate(-4deg);
+  }
+  100% {
+    transform: translateX(-50%) translateY(8px) rotate(0deg);
+  }
+}
